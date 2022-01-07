@@ -1,12 +1,12 @@
 <h3 style="text-align: center;">Client details</h3>
 
-
 <table class="clients" style="text-align:center;">
 	<tr>
 		<th>Name</th>
 		<th>Email</th>
 		<th>Edit</th>
 		<th>Delete</th>
+		<th>Show</th>
 	</tr>
 
 	<% @clients.each do |client| %>
@@ -16,6 +16,7 @@
       <td><%= client.email %></td>
       <td><%= link_to 'Edit', edit_client_path(client), class:"nav-link" %></td>
       <td><%= button_to 'Delete', destroyclient_path, method: :delete,class:"btn btn-danger" %></td>
+      <td><%= link_to 'Show', client_path(client), class:"nav-link" %></td>
     </tr>
   </tbody>
   <% end %>

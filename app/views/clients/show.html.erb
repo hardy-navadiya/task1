@@ -1,1 +1,14 @@
-<%= @client.name %>, <%= @client.email %>
+<div class="row justify-content-center">
+	<div class="card col-md-4">
+	  <div class="card-header text-center" >
+	    <h3><%= @client.name %></h3>
+	  </div>
+	  <div class="card-body text-center">
+	    <p class="card-text"><%= @client.email %></p>
+	    <%= link_to "Create Invoice", invoice_path, class: "btn btn-primary" %>
+	  </div>
+	</div>
+</div>
+
+
+

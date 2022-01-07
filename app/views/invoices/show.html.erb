@@ -1,0 +1,57 @@
+<% provide(:title, "create invoice") %>
+<h3 style="text-align:center"> Create Invoices </h3>
+<div class="row justify-content-center">
+  <div class="col-md-4 col-md-offset-3">
+    <%= form_for(@invoice) do |f| %>
+      <%= f.label :discount %>
+      <%= f.number_field :discount, class:"form-control" %> <br>
+
+      <%= f.label :date %>
+      <%= f.datetime_field :date, class:"form-control" %> <br>
+
+      <%= f.label :amount %>
+      <%= f.number_field :amount, class:"form-control" %> <br>
+
+      <%= f.label :document %>
+      <%= f.file_field :document, class:"form-control" %> <br>
+
+      <%= f.number_field :client_id, class:"form-control",value: @client.id, type: :hidden %> <br>
+
+      <%= f.submit "create Invoice", class: "btn btn-success" %>
+    <% end %>
+  </div>
+</div><br>
+
+<table class="clients" style="text-align:center;">
+  <tr>
+    <th>discount</th>
+    <th>date</th>
+    <th>amount</th>
+    <th>Client id</th>
+    <th>Edit</th>
+    <th>Delete</th>
+    <th>PDF</th>
+    <th>View PDF</th>
+  </tr>
+
+ 
+  <tbody>
+    <% @invoices.each do |invoice| %>
+      <% if invoice.client_id == @client.id %>
+        <tr>
+          <td><%= invoice.discount %> %</td>
+          <td><%= invoice.date %></td>
+          <td><%= invoice.amount %> ₹ </td>
+          <td><%= invoice.client_id %></td>
+          <td><%= link_to 'Edit', edit_invoice_path(invoice), class:"nav-link" %></td>
+          <td><%= button_to 'Delete', destroyinvoice_path, method: :delete,class:"btn btn-danger" %></td>
+          <td><%= link_to 'Download', invoice.document,class:"nav-link", download: '' %></td>
+          <td>
+            <iframe src="<%= rails_blob_path(invoice.document, disposition: :inline) %>" height="100" width="100"></iframe>
+          </td>
+        </tr>
+      <% end %>
+    <% end %>
+  </tbody>
+ 
+</table>
