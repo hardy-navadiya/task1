@@ -30,7 +30,6 @@ class InvoicesController < ApplicationController
   end
 
   def destroy
-  	# render html:"destrot"
   	@invoice = Invoice.find_by(params[:id])
   	@invoice.destroy
   	flash[:danger] = "Invoice deleted!!"
