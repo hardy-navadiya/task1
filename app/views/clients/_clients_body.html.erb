@@ -1,0 +1,13 @@
+<% @clients.each do |client| %>
+  <tbody>
+    <tr class="tr_<%= client.id %>">
+      <td><%= client.name %></td>
+      <td><%= client.email %></td>
+      <!-- <td><%#= link_to 'Edit', edit_client_path(client), class:"nav-link" %></td> -->
+     <!--  <td><%#= button_to 'Delete', destroyclient_path, method: :delete,class:"btn btn-danger" %></td> -->
+      <td><button class="btn btn-primary edit" data-id="<%= client.id %>">Edit</button></td>
+     	<td><button class="btn btn-danger del" data-id="<%= client.id %>">Delete</button></td>
+      <td><%= link_to 'Show', client_path(client), class:"nav-link" %></td>
+    </tr>
+  </tbody>
+<% end %>

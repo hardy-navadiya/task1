@@ -17,7 +17,7 @@
 
       <%= f.number_field :client_id, class:"form-control",value: @client.id, type: :hidden %> <br>
 
-      <%= f.submit "create Invoice", class: "btn btn-success" %>
+      <%= f.submit "create Invoice", class: "btn btn-success insert" %>
     <% end %>
   </div>
 </div><br>
@@ -34,24 +34,66 @@
     <th>View PDF</th>
   </tr>
 
- 
   <tbody>
     <% @invoices.each do |invoice| %>
       <% if invoice.client_id == @client.id %>
-        <tr>
+        <tr class="tr_<%= invoice.id %>">
           <td><%= invoice.discount %> %</td>
           <td><%= invoice.date %></td>
           <td><%= invoice.amount %> ₹ </td>
           <td><%= invoice.client_id %></td>
           <td><%= link_to 'Edit', edit_invoice_path(invoice), class:"nav-link" %></td>
-          <td><%= button_to 'Delete', destroyinvoice_path, method: :delete,class:"btn btn-danger" %></td>
-          <td><%= link_to 'Download', invoice.document,class:"nav-link", download: '' %></td>
           <td>
-            <iframe src="<%= rails_blob_path(invoice.document, disposition: :inline) %>" height="100" width="100"></iframe>
+            <button class="btn btn-danger del" data-id="<%= invoice.id %>">Delete</button>
+          </td>
+          <td><%#= link_to 'Download', invoice.document,class:"nav-link", download: '' %></td>
+          <td>
+            <iframe src="<%#= rails_blob_path(invoice.document, disposition: :inline) %>" height="100" width="100"></iframe>
           </td>
         </tr>
       <% end %>
     <% end %>
   </tbody>
- 
 </table>
+
+<script type="text/javascript">
+  $(document).ready(function(){
+    // $(document).on('click', '.insert', function(event) {
+    //   $.ajax({
+    //     url: '/invoices',
+    //     type: 'POST',
+    //     dataType: 'script',
+    //     data :$('form').serialize(),
+    //     beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+    //   })
+    //   .done(function() {
+    //     console.log("success");
+    //   })
+    //   .fail(function() {
+    //     console.log("error");
+    //   })
+    //   .always(function() {
+    //     console.log("complete");
+    //   });
+    // });
+
+    $('.del').click(function(event) {
+      console.log('inside click-->',$(this).data('id'));
+      $.ajax({
+          url: '/invoices/' + $(this).data('id'),
+          type: 'DELETE',
+          dataType: 'script',
+          data: {id: $(this).data('id')},
+        })
+        .done(function() {
+          console.log("success");
+        })
+        .fail(function() {
+          console.log("error");
+        })
+        .always(function() {
+          console.log("complete");
+        });
+    });
+  });
+</script>

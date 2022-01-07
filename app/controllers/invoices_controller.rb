@@ -1,5 +1,7 @@
 class InvoicesController < ApplicationController
-
+	def index
+		@invoices = Invoice.all
+	end
 	def new
 		@invoice = Invoice.new
 		@clients = Client.all
@@ -32,8 +34,11 @@ class InvoicesController < ApplicationController
   def destroy
   	@invoice = Invoice.find_by(params[:id])
   	@invoice.destroy
-  	flash[:danger] = "Invoice deleted!!"
-  	redirect_to @invoice
+  	respond_to do |format|
+      format.html { redirect_to @invoice, notice: "Client was successfully destroyed." }
+      format.json { head :no_content }
+      format.js
+    end
   end
 
 	def show

@@ -11,18 +11,7 @@
 		<th>Show</th>
 	</tr>
 
-	<% @clients.each do |client| %>
-  <tbody>
-    <tr class="tr_<%= client.id %>">
-      <td><%= client.name %></td>
-      <td><%= client.email %></td>
-      <td><%= link_to 'Edit', edit_client_path(client), class:"nav-link" %></td>
-     <!--  <td><%#= button_to 'Delete', destroyclient_path, method: :delete,class:"btn btn-danger" %></td> -->
-     	<td><button class="btn btn-danger del" data-id="<%= client.id %>">Delete</button></td>
-      <td><%= link_to 'Show', client_path(client), class:"nav-link" %></td>
-    </tr>
-  </tbody>
-  <% end %>
+	<%= render 'clients/clients_body' %>
 </table>
 
 <script type="text/javascript">
@@ -34,7 +23,6 @@
 		    	type: 'DELETE',
 		    	dataType: 'script',
 		    	data: {id: $(this).data('id')},
-          beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
 		    })
 		    .done(function() {
 		    	console.log("success");
@@ -45,6 +33,65 @@
 		    .always(function() {
 		    	console.log("complete");
 		    });
+		  });
+
+		  $('.insert').click(function(event) {
+		  	$.ajax({
+		  		url: '/clients',
+		  		type: 'POST',
+		  		dataType: 'script',
+		  		data :$('form').serialize(),
+	 				beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+		  	})
+		  	.done(function() {
+		  		console.log("success");
+		  	})
+		  	.fail(function() {
+		  		console.log("error");
+		  	})
+		  	.always(function() {
+		  		console.log("complete");
+		  	});
+		  });
+
+		  $('.edit').click(function(event) {
+		  	console.log("update");
+		  	$.ajax({
+		  		url: '/clients/' + $(this).data('id') + '/edit',
+		  		type: 'GET',
+		  		dataType: 'script',
+		  		data :$('form').serialize(),
+	 			
+		  	})
+		  	.done(function() {
+		  		console.log("success");
+		  	})
+		  	.fail(function() {
+		  		console.log("error");
+		  	})
+		  	.always(function() {
+		  		console.log("complete");
+		  	});
+		  });
+
+		  $('.update').click(function(event) {
+		  	console.log("update");
+		  	$.ajax({
+		  		url: '/clients/' + $(this).data('id') + '/',
+		  		type: 'PATCH',
+		  		dataType: 'script',
+		  		data :$('form').serialize(),
+	 			
+		  	})
+		  	.done(function() {
+		  		console.log("success");
+		  	})
+		  	.fail(function() {
+		  		console.log("error");
+		  	})
+		  	.always(function() {
+		  		console.log("complete");
+		  	});
 		  });
 		});
 </script>
