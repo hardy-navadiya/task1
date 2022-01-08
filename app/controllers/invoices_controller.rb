@@ -11,7 +11,8 @@ class InvoicesController < ApplicationController
 		@invoice = Invoice.new(invoice_params)
     if @invoice.save
     	flash[:success] = "Invoice created Successfully!!"
-      redirect_to @invoice
+      redirect_to invoices_url(id: @invoice.client_id)
+      # redirect_to invoices_url
 		else
 		  render 'new'
 		end
@@ -23,11 +24,15 @@ class InvoicesController < ApplicationController
 
   def update
   	@invoice = Invoice.find(params[:id])
-  	if @invoice.update(invoice_params)
-      flash[:success] = "invoice detail edited!!"
-      redirect_to @invoice
-    else
-      render 'edit'
+    respond_to do |format|
+      if @invoice.update(invoice_params)
+        @invoices = Invoice.all
+        format.html { redirect_to invoices_url, notice: "Invoice was successfully updated." }
+        format.js
+      else
+        format.html { render :edit}
+        format.js
+      end
     end
   end
 
