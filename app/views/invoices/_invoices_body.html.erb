@@ -15,9 +15,9 @@
         <td>
           <button class="btn btn-danger del" data-id="<%= invoice.id %>">Delete</button>
         </td>
-        <td><%#= link_to 'Download', invoice.document,class:"nav-link", download: '' %></td>
+        <td><%= link_to 'Download', invoice.document,class:"nav-link", download: '' %></td>
         <td>
-          <iframe src="<%#= rails_blob_path(invoice.document, disposition: :inline) %>" height="100" width="100"></iframe>
+          <iframe src="<%= rails_blob_path(invoice.document, disposition: :inline) %>" height="100" width="100"></iframe>
         </td>
       </tr>
     <% end %>

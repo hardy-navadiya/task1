@@ -1,4 +1,4 @@
-<%= form_for(@invoice,multipart: true) do |f| %>
+<%= form_for(@invoice,multipart: true, class: "invoice-form") do |f| %>
   <%= f.label :discount %>
   <%= f.number_field :discount, class:"form-control" %> <br>
 
@@ -9,7 +9,7 @@
   <%= f.number_field :amount, class:"form-control" %> <br>
 
   <%= f.label :document %>
-  <%= f.file_field :document, class:"form-control document" %> <br>
+  <%= f.file_field :document, class:"form-control document", accept: ".pdf" %> <br>
 
   <%= f.number_field :client_id, class:"form-control",value: @client.id, type: :hidden %> <br>
 
