@@ -4,6 +4,8 @@
 		<th>Date</th>
 		<th>Amount</th>
 		<th>Client_id</th>
+		<th>PDF</th>
+		<th>show pdf</th>
 	</tr>
 
 	<% @invoices.each do |invoice| %>
@@ -13,8 +15,10 @@
       <td><%= invoice.date %></td>
       <td><%= invoice.amount %></td>
       <td><%= invoice.client_id %></td>
-      <!-- <td><%#= link_to 'Edit', edit_client_path(client), class:"nav-link" %></td> -->
-     	<!--  <td><%#= button_to 'Delete', destroyclient_path, method: :delete,class:"btn btn-danger" %></td> -->
+      <td><%#= link_to 'Download', invoice.document,class:"nav-link", download: '' %></td>
+      <td>
+        <iframe src="<%#= rails_blob_path(invoice.document, disposition: :inline) %>" height="100" width="100"></iframe>
+      </td>
     </tr>
   </tbody>
 <% end %>

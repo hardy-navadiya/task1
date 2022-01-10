@@ -9,21 +9,32 @@ class InvoicesController < ApplicationController
 
 	def create
 		@invoice = Invoice.new(invoice_params)
-    if @invoice.save
-    	flash[:success] = "Invoice created Successfully!!"
-      redirect_to invoices_url(id: @invoice.client_id)
-      # redirect_to invoices_url
-		else
-		  render 'new'
-		end
+   
+		respond_to do |format|
+      if @invoice.save
+				@client = Client.find(@invoice.client_id)
+		
+      	@invoices = Invoice.all
+        format.html { redirect_to invoice_url(@invoice.client_id), notice: "Client was successfully created." }
+        format.json { render :show, status: :created, location: @invoice }
+        format.js
+      else
+        format.html { render :new, status: :unprocessable_entity }
+        format.json { render json: @invoice.errors, status: :unprocessable_entity }
+        format.js
+      end
+    end
 	end
 
 	def edit
     @invoice = Invoice.find(params[:id])
+  	@client = Client.find(@invoice.client_id)
   end
 
   def update
   	@invoice = Invoice.find(params[:id])
+  	@client = Client.find(@invoice.client_id)
+  	
     respond_to do |format|
       if @invoice.update(invoice_params)
         @invoices = Invoice.all
@@ -50,6 +61,7 @@ class InvoicesController < ApplicationController
 		@invoice = Invoice.new
 		@invoices = Invoice.all
 		@client = Client.find(params[:id])
+    # @client_inv = @client.invoices
 	end
 
 	private

@@ -1,81 +1,58 @@
 <% provide(:title, "create invoice") %>
-<h3 style="text-align:center"> Create Invoices </h3>
+<h3 style="text-align:center"> Invoices </h3>
+
+
 <div class="row justify-content-center">
   <div class="col-md-4 col-md-offset-3">
-    <%= form_for(@invoice) do |f| %>
-      <%= f.label :discount %>
-      <%= f.number_field :discount, class:"form-control" %> <br>
-
-      <%= f.label :date %>
-      <%= f.datetime_field :date, class:"form-control" %> <br>
-
-      <%= f.label :amount %>
-      <%= f.number_field :amount, class:"form-control" %> <br>
-
-      <%= f.label :document %>
-      <%= f.file_field :document, class:"form-control" %> <br>
-
-      <%= f.number_field :client_id, class:"form-control",value: @client.id, type: :hidden %> <br>
-
-      <%= f.submit "create Invoice", class: "btn btn-success insert" %>
-    <% end %>
+    <%= render 'form', invoice: @invoice %>
   </div>
-</div><br>
+</div>
 
 <table class="clients" style="text-align:center;">
-  <tr>
-    <th>discount</th>
-    <th>date</th>
-    <th>amount</th>
-    <th>Client id</th>
-    <th>Edit</th>
-    <th>Delete</th>
-    <th>PDF</th>
-    <th>View PDF</th>
-  </tr>
+  <thead>
+    <tr>
+      <th>discount</th>
+      <th>date</th>
+      <th>amount</th>
+      <th>Client id</th>
+      <th>Edit</th>
+      <th>Delete</th>
+      <th>PDF</th>
+      <th>View PDF</th>
+    </tr>
+  </thead>
 
-  <tbody>
-    <% @invoices.each do |invoice| %>
-      <% if invoice.client_id == @client.id %>
-        <tr class="tr_<%= invoice.id %>">
-          <td><%= invoice.discount %> %</td>
-          <td><%= invoice.date %></td>
-          <td><%= invoice.amount %> ₹ </td>
-          <td><%= invoice.client_id %></td>
-          <td><%= link_to 'Edit', edit_invoice_path(invoice), class:"nav-link" %></td>
-          <td>
-            <button class="btn btn-danger del" data-id="<%= invoice.id %>">Delete</button>
-          </td>
-          <td><%= link_to 'Download', invoice.document,class:"nav-link", download: '' %></td>
-          <td>
-            <iframe src="<%= rails_blob_path(invoice.document, disposition: :inline) %>" height="100" width="100"></iframe>
-          </td>
-        </tr>
-      <% end %>
-    <% end %>
-  </tbody>
+  <%= render 'invoices/invoices_body' %>
 </table>
 
 <script type="text/javascript">
   $(document).ready(function(){
-    // $(document).on('click', '.insert', function(event) {
-    //   $.ajax({
-    //     url: '/invoices',
-    //     type: 'POST',
-    //     dataType: 'script',
-    //     data :$('form').serialize(),
-    //     beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
-    //   })
-    //   .done(function() {
-    //     console.log("success");
-    //   })
-    //   .fail(function() {
-    //     console.log("error");
-    //   })
-    //   .always(function() {
-    //     console.log("complete");
-    //   });
-    // });
+    $(document).on('click', '.insert', function(event) {
+      var doc = document.getElementById('invoice_document').files[0];
+      console.log(doc);
+      var doc_name = doc.name;
+
+      var form_data = $('form').serialize();
+   
+      $.ajax({
+        url: '/invoices',
+        type: 'POST',
+        dataType: 'script',
+        data: form_data,
+        enctype: 'multipart/form-data',
+        processData: false,
+        beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+      })
+      .done(function() {
+        console.log(this.data);
+      })
+      .fail(function() {
+        console.log("error");
+      })
+      .always(function() {
+        console.log("complete");
+      }); 
+    });
 
     $('.del').click(function(event) {
       console.log('inside click-->',$(this).data('id'));
@@ -94,6 +71,46 @@
         .always(function() {
           console.log("complete");
         });
+    });
+
+    $('.edit').click(function(event) {
+      console.log('edit-->',$(this).data('id'));
+      $.ajax({
+          url: '/invoices/' + $(this).data('id') + '/edit',
+          type: 'GET',
+          dataType: 'script',
+          data :$('form').serialize(),
+          beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+        })
+        .done(function() {
+          console.log("success");
+        })
+        .fail(function() {
+          console.log("error");
+        })
+        .always(function() {
+          console.log("complete");
+        });
+    });
+
+    $(document).on('click', '.update', function(event) {
+      console.log("update class -->", $(this).data('id'));
+
+      $.ajax({
+        url: '/invoices/' + $(this).data('id') + '/',
+        type: 'PATCH',
+        dataType: 'script',
+        data: $('form').serialize(),
+      })
+      .done(function() {
+        console.log("success");
+      })
+      .fail(function() {
+        console.log("error");
+      })
+      .always(function() {
+        console.log("complete");
+      });
     });
   });
 </script>

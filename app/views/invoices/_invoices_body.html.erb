@@ -1,0 +1,25 @@
+<tbody class="invoices">
+  <% @invoices.each do |invoice| %>
+    <% puts "#{invoice.client_id}===>#{@client.id}"  %>
+
+    <% if invoice.client_id == @client.id %>
+      <tr class="tr_<%= invoice.id %>">
+        <td><%= invoice.discount %> %</td>
+        <td><%= invoice.date %></td>
+        <td><%= invoice.amount %> ₹ </td>
+        <td><%= invoice.client_id %></td>
+       <!--  <td><%#= link_to 'Edit', edit_invoice_path(invoice), class:"nav-link" %></td>  -->
+        <td>
+          <button class="edit btn btn-primary" data-id="<%= invoice.id %>">Edit</button>
+        </td>
+        <td>
+          <button class="btn btn-danger del" data-id="<%= invoice.id %>">Delete</button>
+        </td>
+        <td><%#= link_to 'Download', invoice.document,class:"nav-link", download: '' %></td>
+        <td>
+          <iframe src="<%#= rails_blob_path(invoice.document, disposition: :inline) %>" height="100" width="100"></iframe>
+        </td>
+      </tr>
+    <% end %>
+  <% end %>
+</tbody>

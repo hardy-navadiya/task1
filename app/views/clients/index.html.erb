@@ -1,18 +1,7 @@
 <h3 style="text-align: center;">Client details</h3>
 
 <%= render 'form', client: @client %> <br>
-
-<table class="clients" style="text-align:center;">
-	<tr>
-		<th>Name</th>
-		<th>Email</th>
-		<th>Edit</th>
-		<th>Delete</th>
-		<th>Show</th>
-	</tr>
-
-	<%= render 'clients/clients_body' %>
-</table>
+<%= render 'clients/clients_body' %>
 
 <script type="text/javascript">
 		$(document).ready(function(){
@@ -41,7 +30,7 @@
 		  		type: 'POST',
 		  		dataType: 'script',
 		  		data :$('form').serialize(),
-	 				beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+	 			beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
 		  	})
 		  	.done(function() {
 		  		console.log("success");
@@ -59,9 +48,7 @@
 		  	$.ajax({
 		  		url: '/clients/' + $(this).data('id') + '/edit',
 		  		type: 'GET',
-		  		dataType: 'script',
-		  		data :$('form').serialize(),
-	 			
+		  		dataType: 'script'
 		  	})
 		  	.done(function() {
 		  		console.log("success");
@@ -74,14 +61,14 @@
 		  	});
 		  });
 
-		  $('.update').click(function(event) {
-		  	console.log("update");
+		  $(document).on('click', '.update', function(event) {
+		  	console.log('update');
 		  	$.ajax({
 		  		url: '/clients/' + $(this).data('id') + '/',
 		  		type: 'PATCH',
 		  		dataType: 'script',
 		  		data :$('form').serialize(),
-	 			
+		  		beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
 		  	})
 		  	.done(function() {
 		  		console.log("success");
@@ -92,6 +79,7 @@
 		  	.always(function() {
 		  		console.log("complete");
 		  	});
+		  	
 		  });
 		});
 </script>

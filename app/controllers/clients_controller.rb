@@ -19,7 +19,9 @@ class ClientsController < ApplicationController
         format.json { render :show, status: :created, location: @client }
         format.js
       else
-        render 'new'
+        format.html { render :new, status: :unprocessable_entity }
+        format.json { render json: @client.errors, status: :unprocessable_entity }
+        format.js
       end
     end
 	end
