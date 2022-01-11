@@ -29,18 +29,12 @@
   $(document).ready(function(){
     $(document).on('click', '.insert', function(event) {
 
-      var discount = $('#invoice_discount').val();
-      var date = $('#invoice_date').val();
-      var amount = $('#invoice_amount').val();
-      var doc = $('#invoice_document')[0].files[0];
-      var cid = $('#invoice_client_id').val();
-
       var formData = new FormData();
-      formData.append('invoice[discount]',discount)
-      formData.append('invoice[date]',date)
-      formData.append('invoice[amount]',amount)
-      formData.append('invoice[document]', doc)
-      formData.append('invoice[client_id]', cid)
+      formData.append('invoice[discount]',$('#invoice_discount').val())
+      formData.append('invoice[date]',$('#invoice_date').val())
+      formData.append('invoice[amount]',$('#invoice_amount').val())
+      formData.append('invoice[document]', $('#invoice_document')[0].files[0])
+      formData.append('invoice[client_id]', $('#invoice_client_id').val())
 
       console.log(formData);
       $.ajax({
@@ -68,9 +62,9 @@
           type: 'DELETE',
           dataType: 'script',
           data: {id: $(this).data('id')},
-        })
+        })                          
         .done(function() {
-          console.log("success");
+          console.log("success");                                                
         })
         .fail(function() {
           console.log("error");

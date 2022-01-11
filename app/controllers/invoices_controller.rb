@@ -34,10 +34,10 @@ class InvoicesController < ApplicationController
 
   def update
   	@invoice = Invoice.find(params[:id])
-  	@client = Client.find(@invoice.client_id)
+  	@client = Client.find(@invoice.client_id)   
   	
     respond_to do |format|
-      if @invoice.update(invoice_params)
+      if @invoice.update(invoice_params)                                                                                                              
         @invoices = Invoice.all
         format.html { redirect_to invoices_url, notice: "Invoice was successfully updated." }
         format.js
